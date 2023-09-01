@@ -5,6 +5,7 @@ def ball_animation():
     global ball_speed_x
     global ball_speed_y
     global opponent_score, player_score
+    global ball_speed
 
     ball.x += ball_speed_x
     ball.y += ball_speed_y
@@ -14,8 +15,8 @@ def ball_animation():
 
     # Re center / Re spawn ball
     if ball.left <= 0 or ball.right >= screen_width:
-        ball_speed_x = 7 * random.choice((1,-1))
-        ball_speed_y = 7 * random.choice((1,-1))
+        ball_speed_x = ball_speed * random.choice((1,-1))
+        ball_speed_y = ball_speed * random.choice((1,-1))
 
         if ball.left <= 0:
             player_score += 1
@@ -69,8 +70,10 @@ opponent = pygame.Rect(10, screen_height / 2 - 70, 10, 140)
 bg_color = pygame.Color('grey12')
 light_grey = (200,200,200)
 
-ball_speed_x = 7 * random.choice((1,-1))
-ball_speed_y = 7 * random.choice((1,-1))
+ball_speed = 3
+
+ball_speed_x = ball_speed * random.choice((1,-1))
+ball_speed_y = ball_speed * random.choice((1,-1))
 
 player_speed = 0
 player_score = 0
