@@ -1,8 +1,10 @@
 import pygame, sys
+import random
 
 def ball_animation():
     global ball_speed_x
     global ball_speed_y
+    global opponent_score, player_score
 
     ball.x += ball_speed_x
     ball.y += ball_speed_y
@@ -10,17 +12,44 @@ def ball_animation():
     if ball.top <= 0 or ball.bottom >= screen_height:
         ball_speed_y *= -1
 
+    # Re center / Re spawn ball
     if ball.left <= 0 or ball.right >= screen_width:
-        ball_speed_x *= -1
+        ball_speed_x = 7 * random.choice((1,-1))
+        ball_speed_y = 7 * random.choice((1,-1))
+
+        if ball.left <= 0:
+            player_score += 1
+        if ball.right >= screen_width:
+            opponent_score += 1
+
+        ball.x = screen_width / 2 - 15
+        ball.y = screen_height / 2 - 15
 
     if ball.colliderect(player) or ball.colliderect(opponent):
         ball_speed_x *= -1
+
+def opponent_animation():
+    if ball.top < opponent.top:
+        opponent.y -= 7
+    if ball.bottom > opponent.bottom:
+        opponent.y += 7
 
 def player_animation():
     if player.top <= 0:
         player.top = 0
     if player.bottom >= screen_height:
         player.bottom = screen_height
+
+def update_score():
+    global opponent_score, player_score, font, screen
+
+    text = font.render(f'{opponent_score} | {player_score}', True, light_grey)
+
+    textRect = text.get_rect()
+
+    textRect.center = (screen_width/2, textRect.height/2)
+
+    screen.blit(text, textRect)
 
 # General setup
 pygame.init()
@@ -40,10 +69,18 @@ opponent = pygame.Rect(10, screen_height / 2 - 70, 10, 140)
 bg_color = pygame.Color('grey12')
 light_grey = (200,200,200)
 
-ball_speed_x = 7
-ball_speed_y = 7
+ball_speed_x = 7 * random.choice((1,-1))
+ball_speed_y = 7 * random.choice((1,-1))
 
 player_speed = 0
+player_score = 0
+
+opponent_score = 0
+opponent_speed = 4
+
+# Font 
+font = pygame.font.SysFont("arial", 20)
+
 
 # loop
 while True:
@@ -64,8 +101,6 @@ while True:
             if event.key == pygame.K_UP:
                 player_speed += 7
 
-        print(player_speed)
-            
 
     # Ball collision and movement
     ball_animation()
@@ -74,12 +109,17 @@ while True:
     player.y += player_speed
     player_animation()
 
+    opponent_animation()
+
     # Visuals
     screen.fill(bg_color)
     pygame.draw.rect(screen, light_grey, player)
     pygame.draw.rect(screen, light_grey, opponent)
     pygame.draw.ellipse(screen, light_grey, ball)
     pygame.draw.aaline(screen, light_grey, (screen_width/2,0), (screen_width/2, screen_height))
+
+    
+    update_score()
 
     # updating the window
     pygame.display.flip()
