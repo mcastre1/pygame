@@ -30,10 +30,11 @@ def ball_animation():
         ball_speed_x *= -1
 
 def opponent_animation():
+    global opponent_speed
     if ball.top < opponent.top:
-        opponent.y -= 7
+        opponent.y -= opponent_speed
     if ball.bottom > opponent.bottom:
-        opponent.y += 7
+        opponent.y += opponent_speed
 
 def player_animation():
     if player.top <= 0:
