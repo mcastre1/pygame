@@ -81,15 +81,16 @@ opponent_speed = 4
 # Font 
 font = pygame.font.SysFont("arial", 20)
 
+game_over = False
+
 
 # loop
 while True:
     # handling input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
+                pygame.quit()
+                sys.exit() 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
                 player_speed += 7
@@ -100,6 +101,14 @@ while True:
                 player_speed -= 7
             if event.key == pygame.K_UP:
                 player_speed += 7
+        if event.type == 771: # key for y
+            if game_over:
+                ball_speed_x = 7
+                ball_speed_y = 7
+                opponent_speed = 7
+                opponent_score = 0
+                player_score = 0
+
 
 
     # Ball collision and movement
@@ -121,6 +130,19 @@ while True:
     
     update_score()
 
-    # updating the window
+    if opponent_score == 3 or player_score == 3:
+        game_over = True
+        winningtext = font.render('Game over! Play again? (y/n)', True, light_grey)
+        winningtextRect = winningtext.get_rect()
+
+        winningtextRect.center = (screen_width/2, screen_height/2-50)
+
+        screen.blit(winningtext, winningtextRect)
+
+        ball_speed_x = 0
+        ball_speed_y = 0
+        opponent_speed = 0
+
+# updating the window
     pygame.display.flip()
     clock.tick(60)
