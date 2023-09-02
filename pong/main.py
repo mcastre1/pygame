@@ -6,6 +6,7 @@ def ball_animation():
     global ball_speed_y
     global opponent_score, player_score
     global ball_speed
+    global opponent_speed
 
     ball.x += ball_speed_x
     ball.y += ball_speed_y
@@ -20,6 +21,8 @@ def ball_animation():
 
         if ball.left <= 0:
             player_score += 1
+            opponent_speed += .25
+            ball_speed += .5
         if ball.right >= screen_width:
             opponent_score += 1
 
@@ -80,7 +83,7 @@ player_speed = 0
 player_score = 0
 
 opponent_score = 0
-opponent_speed = 4
+opponent_speed = 2
 
 # Font 
 font = pygame.font.SysFont("arial", 20)
@@ -107,11 +110,13 @@ while True:
                 player_speed += 7
         if event.type == 771: # key for y
             if game_over:
-                ball_speed_x = 7
-                ball_speed_y = 7
-                opponent_speed = 7
+                ball_speed = 3
+                ball_speed_x = ball_speed * random.choice((1,-1))
+                ball_speed_y = ball_speed * random.choice((1,-1))
+                opponent_speed = 2
                 opponent_score = 0
                 player_score = 0
+                player_speed = 0
 
 
 
@@ -134,7 +139,7 @@ while True:
     
     update_score()
 
-    if opponent_score == 3 or player_score == 3:
+    if opponent_score == 3:
         game_over = True
         winningtext = font.render('Game over! Play again? (y/n)', True, light_grey)
         winningtextRect = winningtext.get_rect()
