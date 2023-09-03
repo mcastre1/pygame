@@ -7,6 +7,7 @@ def ball_animation():
     global opponent_score, player_score
     global ball_speed
     global opponent_speed
+    global player_mod
 
     ball.x += ball_speed_x
     ball.y += ball_speed_y
@@ -23,6 +24,8 @@ def ball_animation():
             player_score += 1
             opponent_speed += .25
             ball_speed += .5
+            if player_score % 5 == 0:
+                player_mod += .05
         if ball.right >= screen_width:
             opponent_score += 1
 
@@ -81,6 +84,7 @@ ball_speed_y = ball_speed * random.choice((1,-1))
 
 player_speed = 0
 player_score = 0
+player_mod = 1
 
 opponent_score = 0
 opponent_speed = 2
@@ -100,14 +104,14 @@ while True:
                 sys.exit() 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
-                player_speed += 7
+                player_speed += 7 * player_mod
             if event.key == pygame.K_UP:
-                player_speed -= 7
+                player_speed -= 7 * player_mod
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_DOWN:
-                player_speed -= 7
+                player_speed -= 7 * player_mod
             if event.key == pygame.K_UP:
-                player_speed += 7
+                player_speed += 7 * player_mod
         if event.type == 771: # key for y
             if game_over:
                 ball_speed = 3
