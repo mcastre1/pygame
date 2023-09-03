@@ -1,6 +1,7 @@
 import pygame, sys
 from pygame import time
 import random
+import time
 
 def ball_animation():
     global TARGET_FPS
@@ -98,7 +99,7 @@ font = pygame.font.SysFont("arial", 20)
 
 game_over = False
 
-prev_time = time.get_ticks()
+prev_time = time.time()
 TARGET_FPS = 60
 
 
@@ -106,7 +107,7 @@ TARGET_FPS = 60
 while True:
 
     # calculating delta time
-    now = time.get_ticks()
+    now = time.time()
     #print(now)
     dt = now - prev_time
     print(dt)
