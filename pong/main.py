@@ -1,16 +1,19 @@
 import pygame, sys
+from pygame import time
 import random
 
 def ball_animation():
+    global TARGET_FPS
     global ball_speed_x
     global ball_speed_y
     global opponent_score, player_score
     global ball_speed
     global opponent_speed
     global player_mod
+    global dt, TARGET_FPS
 
-    ball.x += ball_speed_x
-    ball.y += ball_speed_y
+    ball.x += ball_speed_x  * dt * TARGET_FPS
+    ball.y += ball_speed_y  * dt * TARGET_FPS
 
     if ball.top <= 0 or ball.bottom >= screen_height:
         ball_speed_y *= -1
@@ -37,10 +40,11 @@ def ball_animation():
 
 def opponent_animation():
     global opponent_speed
+    global dt, TARGET_FPS
     if ball.top < opponent.top:
-        opponent.y -= opponent_speed
+        opponent.y -= opponent_speed * dt * TARGET_FPS
     if ball.bottom > opponent.bottom:
-        opponent.y += opponent_speed
+        opponent.y += opponent_speed * dt * TARGET_FPS
 
 def player_animation():
     if player.top <= 0:
@@ -94,9 +98,21 @@ font = pygame.font.SysFont("arial", 20)
 
 game_over = False
 
+prev_time = time.get_ticks()
+TARGET_FPS = 60
+
 
 # loop
 while True:
+
+    # calculating delta time
+    now = time.get_ticks()
+    #print(now)
+    dt = now - prev_time
+    print(dt)
+    prev_time = now
+
+
     # handling input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -104,14 +120,14 @@ while True:
                 sys.exit() 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
-                player_speed += 7 * player_mod
+                player_speed += 7 
             if event.key == pygame.K_UP:
-                player_speed -= 7 * player_mod
+                player_speed -= 7 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_DOWN:
-                player_speed -= 7 * player_mod
+                player_speed -= 7 
             if event.key == pygame.K_UP:
-                player_speed += 7 * player_mod
+                player_speed += 7 
         if event.type == 771: # key for y
             if game_over:
                 ball_speed = 3
@@ -128,7 +144,7 @@ while True:
     ball_animation()
 
     # player movement and out of screen collision
-    player.y += player_speed
+    player.y += player_speed * dt * TARGET_FPS
     player_animation()
 
     opponent_animation()
