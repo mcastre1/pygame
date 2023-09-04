@@ -110,7 +110,6 @@ while True:
     now = time.time()
     #print(now)
     dt = now - prev_time
-    print(dt)
     prev_time = now
 
 
