@@ -25,6 +25,8 @@ while True:
         if event.type == pygame.QUIT or event.type == pygame.K_ESCAPE:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            crosshair.shoot()
 
 
     pygame.display.flip()
