@@ -1,6 +1,8 @@
 import pygame
 import sys
 from crosshair import Crosshair
+from target import Target
+import random
 
 pygame.init()
 
@@ -19,6 +21,11 @@ crosshair_group.add(crosshair)
 
 pygame.mouse.set_visible(False)
 
+# Targets
+target_group = pygame.sprite.Group()
+for target in range(20):
+    new_target = Target('./sprites/graphics/target.png', random.randrange(0,screen_width), random.randrange(0, screen_height))
+    target_group.add(new_target)
 
 while True:
     for event in pygame.event.get():
@@ -32,6 +39,8 @@ while True:
     pygame.display.flip()
     #screen.blit(background,(0,0))
     screen.fill((255,255,255))
+    target_group.draw(screen)
+
     crosshair_group.draw(screen)
     crosshair_group.update()
     clock.tick(60)
