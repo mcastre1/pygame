@@ -7,8 +7,9 @@ class Crosshair(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         #self.gunshot = pygame.mixer.Sound('gunshot.wav')
 
-    def shoot(self):
+    def shoot(self, crosshair, target_group):
         print("shoot")
+        pygame.sprite.spritecollide(crosshair, target_group, True)
         #self.gunshot.play()
 
     def update(self):

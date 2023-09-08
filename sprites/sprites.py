@@ -33,7 +33,7 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            crosshair.shoot()
+            crosshair.shoot(crosshair, target_group)
 
 
     pygame.display.flip()
