@@ -9,10 +9,20 @@ class Player(pygame.sprite.Sprite):
         # self.rect = self.image.get_rect()
         # self.rect.topleft = [pos_x, pos_y]
 
+        scale = 3
+
         self.sprites = []
         self.is_animating = False
         for n in range(1,11):
             self.sprites.append(pygame.image.load(f'./graphics/attack_{n}.png'))
+
+        #resizing image
+        for i, image in enumerate(self.sprites):
+            height = image.get_rect().height
+            width = image.get_rect().width
+
+            self.sprites[i] = pygame.transform.scale(image, ((width * scale, height * scale)))
+
 
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
