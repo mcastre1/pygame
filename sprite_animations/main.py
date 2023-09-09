@@ -20,7 +20,11 @@ while True:
             pygame.quit()
             sys.exit()
 
+        if event.type == pygame.KEYDOWN:
+            player.animate()
+
     screen.fill((0,0,0))
     moving_sprites.draw(screen)
+    moving_sprites.update()
     pygame.display.flip()
     clock.tick(60)
