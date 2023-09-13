@@ -19,8 +19,8 @@ class ParticlePrinciple:
 
     # adds particles
     def add_particles(self):
-        pos_x = 250
-        pos_y = 250
+        pos_x = pygame.mouse.get_pos()[0]
+        pos_y = pygame.mouse.get_pos()[1]
         radius = 10
         direction = -3
         particle_circle = [[pos_x, pos_y], radius, direction]
