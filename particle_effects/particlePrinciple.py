@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys, random
 
 class ParticlePrinciple:
     def __init__(self):
@@ -11,7 +11,8 @@ class ParticlePrinciple:
             self.delete_particles()
             for particle in self.particles:
                 # move
-                particle[0][1] += particle[2]
+                particle[0][1] += particle[2][0]
+                particle[0][0] += particle[2][1]
                 # shrink
                 particle[1] -= 0.2
                 # draw a cirlce around the particle
@@ -22,8 +23,9 @@ class ParticlePrinciple:
         pos_x = pygame.mouse.get_pos()[0]
         pos_y = pygame.mouse.get_pos()[1]
         radius = 10
-        direction = -3
-        particle_circle = [[pos_x, pos_y], radius, direction]
+        direction_x = random.randint(-3,3)
+        direction_y = random.randint(-3,3)
+        particle_circle = [[pos_x, pos_y], radius, [direction_x, direction_y]]
         self.particles.append(particle_circle)
 
     # delete particles after a certain time
