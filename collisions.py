@@ -19,6 +19,8 @@ def bouncing_rect():
         other_speed *= -1
 
     # collision with other rect
+    # collision tolerance for when rects move more than 1 pixel at a time.
+    # speeds are checked to make sure the moving rect is moving towards the other rect
     collision_tolerance = 10
     if moving_rect.colliderect(other_rect):
         if abs(other_rect.top - moving_rect.bottom) < collision_tolerance and y_speed > 0:
