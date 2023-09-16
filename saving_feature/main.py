@@ -24,10 +24,13 @@ data = {
     'blue' : 0
 }
 
+try:
 # Read and load json text file
-with open('./saving_feature/clicker_score.txt', 'r') as score_file:
-    data = json.load(score_file)
-
+    with open('./saving_feature/clicker_score.txt', 'r') as score_file:
+        data = json.load(score_file)
+except:
+    print("No file created yet")
+    
 # Text
 red_score_surface = game_font.render(f'Clicks: {data["red"]}', True, 'Black')
 red_score_rect = red_score_surface.get_rect(center = (150,320))
