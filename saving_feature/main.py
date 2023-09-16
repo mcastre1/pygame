@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, json
 
 screen_width = 600
 screen_height = 400
@@ -24,6 +24,10 @@ data = {
     'blue' : 0
 }
 
+# Read and load json text file
+with open('./saving_feature/clicker_score.txt', 'r') as score_file:
+    data = json.load(score_file)
+
 # Text
 red_score_surface = game_font.render(f'Clicks: {data["red"]}', True, 'Black')
 red_score_rect = red_score_surface.get_rect(center = (150,320))
@@ -33,10 +37,15 @@ blue_score_rect = blue_score_surface.get_rect(center=(450,320))
 
 while True:
     for event in pygame.event.get():
+        # When exiting game, save the data scores into a json text file
         if event.type == pygame.QUIT:
+            with open('./saving_feature/clicker_score.txt', 'w') as score_file:
+                json.dump(data, score_file)
+            
             pygame.quit()
             sys.exit()
 
+        # Update data entries with a plus one on event position
         if event.type == pygame.MOUSEBUTTONDOWN:
             if red_rect.collidepoint(event.pos):
                 data['red'] += 1
