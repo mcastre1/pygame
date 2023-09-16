@@ -11,10 +11,23 @@ class Head(pygame.sprite.Sprite):
         self.rect.center = (pos_x, pos_y)
         self.image.fill(GREEN)
         self.speed = SNAKE_SPEED
+        self.direction = 'Right'
 
     def update(self):
-        self.pos_x += self.speed
+        if self.direction == 'Right':
+            self.pos_x += self.speed
+        if self.direction == 'Left':
+            self.pos_x -= self.speed
+        if self.direction == 'Up':
+            self.pos_y -= self.speed
+        if self.direction == 'Down':
+            self.pos_y += self.speed
+
         self.rect.center = (self.pos_x, self.pos_y)
+
+    def set_direction(self, direction):
+        self.direction = direction
+        print(f'set direction to {self.direction}')
 
     def draw(self):
         pygame.display.get_surface().blit(self.image, self.rect)

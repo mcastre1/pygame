@@ -23,6 +23,18 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_DOWN]:
+                head.set_direction('Down')
+            elif keys[pygame.K_UP]:
+                head.set_direction('Up')
+            elif keys[pygame.K_LEFT]:
+                head.set_direction('Left')
+            elif keys[pygame.K_RIGHT]:
+                head.set_direction('Right')
+            
+            print('key down')
 
     screen.fill(WHITE)
 
