@@ -34,7 +34,8 @@ while True:
                 head.set_direction('Left')
             elif keys[pygame.K_RIGHT]:
                 head.set_direction('Right')
-            elif keys[pygame.K_SPACE]:
+
+            if keys[pygame.K_SPACE]:
                 if len(body_group) == 0:
                     if head.direction == 'Right':
                         body_group.add(Body(head.pos_x - SIZE, head.pos_y, head.direction))
@@ -61,29 +62,23 @@ while True:
     screen.fill(WHITE)
 
     head_group.update()
-    
+
     head_group.draw(screen)
     body_group.draw(screen)
-    for i in range(len(body_group)):
-        body = body_group.sprites()[i]
-        x_mult = 0
-        y_mult = 0
-        if i == 0:
-            direction = head.direction
-            if direction == 'Right':
-                x_mult = -1
-            elif direction == 'Left':
-                x_mult = 1
-            elif direction == 'Up':
-                y_mult = 1
-            elif direction == 'Down':
-                y_mult = -1
-            
-            if x_mult != 0:
-                body.update(head.pos_x + ((SIZE/2)*x_mult), head.pos_y, head.direction)
-            if y_mult != 0:
-                body.update(head.pos_x, head.pos_y + ((SIZE/2)*y_mult), head.direction)
+
+    new_body_group = body_group.sprites()[:-1]
+
+    if head.direction == 'Right':
+        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+    elif head.direction == 'Left':
+        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+    elif head.direction == 'Up':
+        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+    elif head.direction == 'Down':
+        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+
+    body_group = pygame.sprite.Group(new_body_group)
 
     pygame.display.update()
 
-    clock.tick(50)
+    clock.tick(20)
