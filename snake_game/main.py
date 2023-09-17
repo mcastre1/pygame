@@ -3,6 +3,14 @@ from settings import *
 from sprites.head import Head
 from sprites.body import Body
 
+def checkCollision():
+    global head_group, body_group, head
+
+    for body in body_group:
+        if body.rect.colliderect(head.rect):
+            print("Collided")
+        
+
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -60,6 +68,9 @@ while True:
 
 
     screen.fill(WHITE)
+    last_pos_x = head.pos_x
+    last_pos_y = head.pos_y
+    last_direction = head.direction
 
     head_group.update()
 
@@ -69,16 +80,18 @@ while True:
     new_body_group = body_group.sprites()[:-1]
 
     if head.direction == 'Right':
-        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+        new_body_group.insert(0, Body(last_pos_x, last_pos_y, last_direction))
     elif head.direction == 'Left':
-        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+        new_body_group.insert(0, Body(last_pos_x, last_pos_y, last_direction))
     elif head.direction == 'Up':
-        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+        new_body_group.insert(0, Body(last_pos_x, last_pos_y, last_direction))
     elif head.direction == 'Down':
-        new_body_group.insert(0, Body(head.pos_x - SIZE, head.pos_y, head.direction))
+        new_body_group.insert(0,Body(last_pos_x, last_pos_y, last_direction))
 
     body_group = pygame.sprite.Group(new_body_group)
 
+    checkCollision()
+
     pygame.display.update()
 
-    clock.tick(20)
+    clock.tick()

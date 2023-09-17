@@ -9,5 +9,5 @@ WHITE = (255,255,255)
 GREEN = (50, 168, 82)
 
 # Snake atributest
-SNAKE_SPEED = 5
+SNAKE_SPEED = 10
 SIZE = 10
