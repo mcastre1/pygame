@@ -10,3 +10,4 @@ GREEN = (50, 168, 82)
 
 # Snake atributest
 SNAKE_SPEED = 5
+SIZE = 10
