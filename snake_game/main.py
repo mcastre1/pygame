@@ -48,7 +48,6 @@ while True:
                     tail = body_group.sprites()[-1]
                     direction = tail.direction
 
-                    print(direction)
                     if head.direction == 'Right':
                         body_group.add(Body(tail.pos_x - SIZE, tail.pos_y, tail.direction))
                     elif head.direction == 'Left':
@@ -65,7 +64,8 @@ while True:
     
     head_group.draw(screen)
     body_group.draw(screen)
-    for i, body in enumerate(body_group.sprites()[::-1]):
+    for i in range(len(body_group)):
+        body = body_group.sprites()[i]
         x_mult = 0
         y_mult = 0
         if i == 0:
@@ -83,10 +83,7 @@ while True:
                 body.update(head.pos_x + ((SIZE/2)*x_mult), head.pos_y, head.direction)
             if y_mult != 0:
                 body.update(head.pos_x, head.pos_y + ((SIZE/2)*y_mult), head.direction)
-        
-    
-    #body_group.update(head.pos_x - 5, head.pos_y)
 
     pygame.display.update()
 
-    clock.tick(FPS)
+    clock.tick(50)
