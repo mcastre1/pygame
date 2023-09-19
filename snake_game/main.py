@@ -47,8 +47,10 @@ def spawnApple():
     global pickup_group, timer_speed
     height_indeces = SCREEN_HEIGHT/SIZE
     width_indeces = SCREEN_WIDTH/SIZE
+    # This will ensure apple spawns one index before each of the edges
+    apple = Apple(random.randint(1, width_indeces - 1)*SIZE, random.randint(1, height_indeces - 1)*SIZE)
 
-    pickup_group.add(Apple(random.randint(0, width_indeces)*SIZE, random.randint(0, height_indeces)*SIZE))
+    pickup_group.add(apple)
     timer_speed -= 1
     pygame.time.set_timer(update_head, timer_speed)
 
