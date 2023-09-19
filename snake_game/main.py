@@ -15,7 +15,9 @@ def checkCollision():
     for pickup in pickup_group:
         if head.rect.colliderect(pickup.rect):
             pickup.kill()
-            pickup_group.add(Apple(random.randint(0,SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)))
+            spawnApple()
+            #
+            # pickup_group.add(Apple(random.randint(0,SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)))
             if len(body_group) == 0:
                 if head.direction == 'Right':
                     body_group.add(Body(head.pos_x - SIZE, head.pos_y, head.direction))
@@ -37,6 +39,13 @@ def checkCollision():
                 elif head.direction == 'Down':
                     body_group.add(Body(tail.pos_x, tail.pos_y - SIZE, tail.direction))
 
+def spawnApple():
+    global pickup_group
+    height_indeces = SCREEN_HEIGHT/SIZE
+    width_indeces = SCREEN_WIDTH/SIZE
+
+    pickup_group.add(Apple(random.randint(0, width_indeces)*SIZE, random.randint(0, height_indeces)*SIZE))
+
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -54,7 +63,8 @@ pickup_group = pygame.sprite.Group()
 head_group.add(head)
 
 # Spawn initial apple
-pickup_group.add(Apple(random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)))
+spawnApple()
+#pickup_group.add(Apple(random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)))
 
 while True:
     for event in pygame.event.get():
@@ -71,30 +81,6 @@ while True:
                 head.set_direction('Left')
             elif keys[pygame.K_RIGHT]:
                 head.set_direction('Right')
-
-            # if keys[pygame.K_SPACE]:
-            #     if len(body_group) == 0:
-            #         if head.direction == 'Right':
-            #             body_group.add(Body(head.pos_x - SIZE, head.pos_y, head.direction))
-            #         elif head.direction == 'Left':
-            #             body_group.add(Body(head.pos_x + SIZE, head.pos_y, head.direction))
-            #         elif head.direction == 'Up':
-            #             body_group.add(Body(head.pos_x, head.pos_y + SIZE, head.direction))
-            #         elif head.direction == 'Down':
-            #             body_group.add(Body(head.pos_x, head.pos_y - SIZE, head.direction))
-            #     else:
-            #         tail = body_group.sprites()[-1]
-            #         direction = tail.direction
-
-            #         if head.direction == 'Right':
-            #             body_group.add(Body(tail.pos_x - SIZE, tail.pos_y, tail.direction))
-            #         elif head.direction == 'Left':
-            #             body_group.add(Body(tail.pos_x + SIZE, tail.pos_y, tail.direction))
-            #         elif head.direction == 'Up':
-            #             body_group.add(Body(tail.pos_x, tail.pos_y + SIZE, tail.direction))
-            #         elif head.direction == 'Down':
-            #             body_group.add(Body(tail.pos_x, tail.pos_y - SIZE, tail.direction))
-
 
     screen.fill(WHITE)
     last_pos_x = head.pos_x
