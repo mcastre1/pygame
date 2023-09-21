@@ -14,6 +14,8 @@ class GameState():
         self.update_head = pygame.USEREVENT + 1
         self.timer_speed = 200
         self.init = True
+        self.head = Head(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+        self.font = pygame.font.Font(None, 20)
 
     def state_manager(self):
         if self.state == "play":
@@ -22,9 +24,6 @@ class GameState():
             self.play()
 
     def play_init(self):
-        # Sprites
-        self.head = Head(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
-
         # Add sprites to groups
         self.head_group.add(self.head)
 
@@ -71,8 +70,18 @@ class GameState():
         self.body_group.draw(self.screen)
 
         self.checkCollision()
+        self.updateScore()
 
         pygame.display.update()
+
+    def updateScore(self):
+        text = self.font.render(f'Score : {self.head.score}', True, 'Black')
+        text_rect = text.get_rect()
+
+        text_rect.center = (SCREEN_WIDTH/2, 20)
+
+        self.screen.blit(text, text_rect)
+
 
     def checkCollision(self):
         for body in self.body_group:
@@ -83,6 +92,8 @@ class GameState():
             if self.head.rect.colliderect(pickup.rect):
                 pickup.kill()
                 self.spawnApple()
+                
+                # Creating a new body part once an apple has been collided against.
                 if len(self.body_group) == 0:
                     if self.head.direction == 'Right':
                         self.body_group.add(Body(self.head.pos_x - SIZE, self.head.pos_y, self.head.direction))
@@ -103,6 +114,8 @@ class GameState():
                         self.body_group.add(Body(tail.pos_x, tail.pos_y + SIZE, tail.direction))
                     elif self.head.direction == 'Down':
                         self.body_group.add(Body(tail.pos_x, tail.pos_y - SIZE, tail.direction))
+
+                self.head.add_score(10)
 
             
 

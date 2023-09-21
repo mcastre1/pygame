@@ -12,6 +12,7 @@ class Head(pygame.sprite.Sprite):
         self.image.fill(GREEN)
         self.speed = SNAKE_SPEED
         self.direction = 'Right'
+        self.score = 0
 
     def update(self):
         if self.direction == 'Right':
@@ -31,6 +32,12 @@ class Head(pygame.sprite.Sprite):
 
     def draw(self):
         pygame.display.get_surface().blit(self.image, self.rect)
+
+    def add_score(self, score):
+        self.score += score
+
+    def get_score(self):
+        return int(self.score)
 
 
     
