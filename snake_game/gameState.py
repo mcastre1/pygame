@@ -152,6 +152,17 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if self.play_text_rect.collidepoint(pygame.mouse.get_pos()):
+                        print('Play!')
+
+            if event.type == pygame.MOUSEMOTION:
+                if self.play_text_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.play_text = self.button_font.render('Play', True, 'Gray')
+                else:
+                    self.play_text = self.button_font.render('Play', True, 'Black')
         
 
         self.screen.fill(WHITE)
