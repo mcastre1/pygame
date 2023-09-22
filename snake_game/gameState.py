@@ -156,7 +156,7 @@ class GameState():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.play_text_rect.collidepoint(pygame.mouse.get_pos()):
-                        print('Play!')
+                        self.state = 'play'
 
             if event.type == pygame.MOUSEMOTION:
                 if self.play_text_rect.collidepoint(pygame.mouse.get_pos()):
