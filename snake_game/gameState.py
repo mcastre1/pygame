@@ -49,19 +49,23 @@ class GameState():
                     self.head.set_direction('Left')
                 elif keys[pygame.K_RIGHT]:
                     self.head.set_direction('Right')
+
             if event.type == self.update_head:
                 self.head_group.update()
-                new_body_group = self.body_group.sprites()[:-1]
                 
-                if self.head.direction == 'Right':
-                    new_body_group.insert(0, Body(self.head.pos_x-SIZE, self.head.pos_y, self.head.direction))
-                elif self.head.direction == 'Left':
-                    new_body_group.insert(0, Body(self.head.pos_x+SIZE, self.head.pos_y, self.head.direction))
-                elif self.head.direction == 'Up':
-                    new_body_group.insert(0, Body(self.head.pos_x, self.head.pos_y + SIZE, self.head.direction))
-                elif self.head.direction == 'Down':
-                    new_body_group.insert(0,Body(self.head.pos_x, self.head.pos_y - SIZE, self.head.direction))
-                self.body_group = pygame.sprite.Group(new_body_group)
+                if len(self.body_group) > 0:
+                    new_body_group = self.body_group.sprites()[:-1]
+                    
+                    if self.head.direction == 'Right':
+                        new_body_group.insert(0, Body(self.head.pos_x-SIZE, self.head.pos_y, self.head.direction))
+                    elif self.head.direction == 'Left':
+                        new_body_group.insert(0, Body(self.head.pos_x+SIZE, self.head.pos_y, self.head.direction))
+                    elif self.head.direction == 'Up':
+                        new_body_group.insert(0, Body(self.head.pos_x, self.head.pos_y + SIZE, self.head.direction))
+                    elif self.head.direction == 'Down':
+                        new_body_group.insert(0,Body(self.head.pos_x, self.head.pos_y - SIZE, self.head.direction))
+
+                    self.body_group = pygame.sprite.Group(new_body_group)
 
         self.screen.fill(WHITE)
     
@@ -103,7 +107,7 @@ class GameState():
                         self.body_group.add(Body(self.head.pos_x, self.head.pos_y + SIZE, self.head.direction))
                     elif self.head.direction == 'Down':
                         self.body_group.add(Body(self.head.pos_x, self.head.pos_y - SIZE, self.head.direction))
-                else:
+                elif len(self.body_group) > 0:
                     tail = self.body_group.sprites()[-1]
 
                     if self.head.direction == 'Right':
