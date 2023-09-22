@@ -17,11 +17,27 @@ class GameState():
         self.head = Head(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
         self.font = pygame.font.Font(None, 20)
 
+        # intro settings
+        self.intro_font = pygame.font.Font(None, 100)
+        self.snake_text = self.intro_font.render('Snake', True, 'Black')
+        self.snake_text_rect = self.snake_text.get_rect()
+        self.snake_text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
+
+        self.button_font = pygame.font.Font(None, 20)
+        self.play_text = self.button_font.render('Play', True, 'Black')
+        self.play_text_rect = self.play_text.get_rect()
+        self.play_text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 100)
+
+    def set_state(self, state):
+        self.state = state
+
     def state_manager(self):
         if self.state == "play":
             if self.init:
                 self.play_init()
             self.play()
+        elif self.state == 'intro':
+            self.intro_state()
 
     def play_init(self):
         # Add sprites to groups
@@ -76,8 +92,6 @@ class GameState():
         self.checkCollision()
         self.updateScore()
 
-        pygame.display.update()
-
     def updateScore(self):
         text = self.font.render(f'Score : {self.head.score}', True, 'Black')
         text_rect = text.get_rect()
@@ -121,8 +135,6 @@ class GameState():
 
                 self.head.add_score(10)
 
-            
-
     def spawnApple(self):
         height_indeces = SCREEN_HEIGHT/SIZE
         width_indeces = SCREEN_WIDTH/SIZE
@@ -133,3 +145,17 @@ class GameState():
         self.timer_speed -= 1
         print(f" New timer speed : {self.timer_speed}")
         pygame.time.set_timer(self.update_head, self.timer_speed)
+
+
+    def intro_state(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        
+
+        self.screen.fill(WHITE)
+        self.screen.blit(self.snake_text, self.snake_text_rect)
+        self.screen.blit(self.play_text, self.play_text_rect)
+
+

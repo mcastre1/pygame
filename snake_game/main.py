@@ -14,7 +14,10 @@ body_group = pygame.sprite.Group()
 pickup_group = pygame.sprite.Group()
 
 game_state = GameState(head_group, body_group, pickup_group, screen)
+game_state.set_state('intro')
 
 while True:
     game_state.state_manager()
+    pygame.display.update()
     clock.tick(30)
+    
