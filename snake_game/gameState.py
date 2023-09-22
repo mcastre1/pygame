@@ -52,7 +52,7 @@ class GameState():
 
             if event.type == self.update_head:
                 self.head_group.update()
-                
+
                 if len(self.body_group) > 0:
                     new_body_group = self.body_group.sprites()[:-1]
                     
@@ -110,13 +110,13 @@ class GameState():
                 elif len(self.body_group) > 0:
                     tail = self.body_group.sprites()[-1]
 
-                    if self.head.direction == 'Right':
+                    if tail.direction == 'Right':
                         self.body_group.add(Body(tail.pos_x - SIZE, tail.pos_y, tail.direction))
-                    elif self.head.direction == 'Left':
+                    elif tail.direction == 'Left':
                         self.body_group.add(Body(tail.pos_x + SIZE, tail.pos_y, tail.direction))
-                    elif self.head.direction == 'Up':
+                    elif tail.direction == 'Up':
                         self.body_group.add(Body(tail.pos_x, tail.pos_y + SIZE, tail.direction))
-                    elif self.head.direction == 'Down':
+                    elif tail.direction == 'Down':
                         self.body_group.add(Body(tail.pos_x, tail.pos_y - SIZE, tail.direction))
 
                 self.head.add_score(10)
