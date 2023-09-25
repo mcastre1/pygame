@@ -5,7 +5,7 @@ from sprites.body import Body
 import random, pygame, sys
 
 class GameState():
-    def __init__(self, head_group, body_group, pickup_group, screen):
+    def __init__(self, head_group, body_group, pickup_group, screen, apple_bite_sfx):
         self.state = "play"
         self.head_group = head_group
         self.body_group = body_group
@@ -16,6 +16,9 @@ class GameState():
         self.init = True
         self.head = Head(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
         self.font = pygame.font.Font(None, 20)
+
+        # sounds
+        self.apple_bite_sfx = apple_bite_sfx
 
         # intro settings
         self.intro_font = pygame.font.Font(None, 100)
@@ -123,6 +126,7 @@ class GameState():
             
         for pickup in self.pickup_group:
             if self.head.rect.colliderect(pickup.rect):
+                self.apple_bite_sfx.play()
                 pickup.kill()
                 self.spawnApple()
                 
@@ -179,9 +183,11 @@ class GameState():
         self.head_group.draw(self.screen)
         self.body_group.draw(self.screen)
 
+        # Surface used to make illusion of grayed out game assets.
         pause_surf = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         pause_surf_rect = pause_surf.get_rect()
         pause_surf.fill(DARK_GRAY)
+        # This is how you make the above surface transperent
         pause_surf.set_alpha(128)
 
         self.screen.blit(pause_surf, pause_surf_rect)
