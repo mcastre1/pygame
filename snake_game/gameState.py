@@ -38,6 +38,8 @@ class GameState():
             self.play()
         elif self.state == 'intro':
             self.intro_state()
+        elif self.state == 'pause':
+            self.pause_state()
 
     def play_init(self):
         # Add sprites to groups
@@ -55,6 +57,13 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_p]:
+                    print('pause')
+                    self.state = 'pause'
+
             if event.type == pygame.KEYDOWN:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_DOWN]:
@@ -145,6 +154,19 @@ class GameState():
         self.timer_speed -= 1
         print(f" New timer speed : {self.timer_speed}")
         pygame.time.set_timer(self.update_head, self.timer_speed)
+    
+    def pause_state(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            
+            if event.type == pygame.KEYDOWN:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_p]:
+                    self.state = 'play'
+
+        self.screen.fill(WHITE)
 
 
     def intro_state(self):

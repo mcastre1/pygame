@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+import random
 
 class Head(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
@@ -11,8 +12,12 @@ class Head(pygame.sprite.Sprite):
         self.rect.center = (pos_x, pos_y)
         self.image.fill(GREEN)
         self.speed = SNAKE_SPEED
-        self.direction = 'Right'
+        self.direction = self.random_direction()
         self.score = 0
+
+    def random_direction(self):
+        directions = ['Right', 'Left', 'Up', 'Down']
+        return random.choice(directions)
 
     def update(self):
         if self.direction == 'Right':
