@@ -6,6 +6,7 @@ class Apple(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((SIZE, SIZE))
         self.rect = self.image.get_rect()
-        self.image.fill('red')
+        self.rgb = RED
+        self.image.fill(self.rgb)
 
         self.rect.center = (pos_x, pos_y)

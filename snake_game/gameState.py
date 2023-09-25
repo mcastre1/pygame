@@ -28,6 +28,12 @@ class GameState():
         self.play_text_rect = self.play_text.get_rect()
         self.play_text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 100)
 
+        # pause settings
+        self.pause_font = pygame.font.Font(None, 100)
+        self.pause_text = self.pause_font.render('PAUSE', True, 'Black')
+        self.pause_text_rect = self.pause_text.get_rect()
+        self.pause_text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
+
     def set_state(self, state):
         self.state = state
 
@@ -165,9 +171,22 @@ class GameState():
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_p]:
                     self.state = 'play'
-
+        
+        
         self.screen.fill(WHITE)
 
+        self.pickup_group.draw(self.screen)
+        self.head_group.draw(self.screen)
+        self.body_group.draw(self.screen)
+
+        pause_surf = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pause_surf_rect = pause_surf.get_rect()
+        pause_surf.fill(DARK_GRAY)
+        pause_surf.set_alpha(128)
+
+        self.screen.blit(pause_surf, pause_surf_rect)
+
+        self.screen.blit(self.pause_text, self.pause_text_rect)
 
     def intro_state(self):
         for event in pygame.event.get():

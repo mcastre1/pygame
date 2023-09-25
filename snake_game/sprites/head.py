@@ -10,7 +10,8 @@ class Head(pygame.sprite.Sprite):
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.rect.center = (pos_x, pos_y)
-        self.image.fill(GREEN)
+        self.rgb = GREEN
+        self.image.fill(self.rgb)
         self.speed = SNAKE_SPEED
         self.direction = self.random_direction()
         self.score = 0
