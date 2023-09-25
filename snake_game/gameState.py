@@ -49,6 +49,8 @@ class GameState():
             self.intro_state()
         elif self.state == 'pause':
             self.pause_state()
+        elif self.state == 'gameover':
+            self.gameover_sate()
 
     def play_init(self):
         # Add sprites to groups
@@ -123,6 +125,8 @@ class GameState():
         for body in self.body_group:
             if body.rect.colliderect(self.head.rect):
                 print("Collided")
+                print("game over")
+                self.state = 'gameover'
             
         for pickup in self.pickup_group:
             if self.head.rect.colliderect(pickup.rect):
@@ -215,5 +219,43 @@ class GameState():
         self.screen.fill(WHITE)
         self.screen.blit(self.snake_text, self.snake_text_rect)
         self.screen.blit(self.play_text, self.play_text_rect)
+
+    def gameover_sate(self):
+        playagain_font = pygame.font.Font(None, 30)
+        playagain_text = playagain_font.render('Play again', True, DARK_GRAY)
+        playagain_rect = playagain_text.get_rect()
+        playagain_rect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if playagain_rect.collidepoint(pygame.mouse.get_pos()):
+                        self.body_group.empty()
+                        self.head_group.empty()
+                        self.pickup_group.empty()
+                        self.head = Head(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+                        self.init = True
+                        self.state = 'play'
+
+        if playagain_rect.collidepoint(pygame.mouse.get_pos()):
+            playagain_text = playagain_font.render('Play again', True, 'Gray')
+        else:
+            playagain_text = playagain_font.render('Play again', True, 'Black')
+
+        playagain_rect = playagain_text.get_rect()
+        playagain_rect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+
+        # Text surface
+        gameover_font = pygame.font.Font(None, 80)
+        gameover_text = gameover_font.render('GameOver', True, RED)
+        gameover_rect = gameover_text.get_rect()
+        gameover_rect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 200)
+
+        self.screen.fill(WHITE)
+        self.screen.blit(gameover_text, gameover_rect)
+        self.screen.blit(playagain_text, playagain_rect)
 
 
