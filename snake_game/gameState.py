@@ -110,8 +110,26 @@ class GameState():
         self.body_group.draw(self.screen)
 
         self.checkCollision()
+        self.checkOutOfBounds()
         self.updateScore()
 
+    # Check if snake head "touches" the edge of the screen
+    # If so, gameover.
+    def checkOutOfBounds(self):
+        if self.head.direction == 'Right':
+            if self.head.rect.right > SCREEN_WIDTH:
+                self.state = 'gameover'
+        elif self.head.direction == 'Left':
+            if self.head.rect.left < 0:
+                self.state = 'gameover'
+        elif self.head.direction == 'Up':
+            if self.head.rect.top < 0:
+                self.state = 'gameover'
+        elif self.head.direction == 'Down':
+            if self.head.rect.bottom > SCREEN_HEIGHT:
+                self.state = 'gameover'
+
+    # Update score at top of screen to new score.
     def updateScore(self):
         text = self.font.render(f'Score : {self.head.score}', True, 'Black')
         text_rect = text.get_rect()
@@ -121,13 +139,17 @@ class GameState():
         self.screen.blit(text, text_rect)
 
 
+    # Check whether the snake head has collided with itself or an apple/pickup
     def checkCollision(self):
+        # Check collision of head with itself
+        # If so, gameover
         for body in self.body_group:
             if body.rect.colliderect(self.head.rect):
-                print("Collided")
-                print("game over")
                 self.state = 'gameover'
-            
+        
+        # Check collision of head with apple/pickup
+        # If so, play sound, destroy the pickup, randomly spawn a new pickup on screen
+        # and create a new body part for the snake.
         for pickup in self.pickup_group:
             if self.head.rect.colliderect(pickup.rect):
                 self.apple_bite_sfx.play()
