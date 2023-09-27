@@ -5,7 +5,7 @@ from sprites.body import Body
 import random, pygame, sys
 
 class GameState():
-    def __init__(self, head_group, body_group, pickup_group, screen, apple_bite_sfx):
+    def __init__(self, head_group, body_group, pickup_group, screen, apple_bite_sfx, bg_music):
         pygame.mixer.init()
         self.state = "play"
         self.head_group = head_group
@@ -21,6 +21,8 @@ class GameState():
         # sounds
         self.apple_bite_sfx = apple_bite_sfx
         self.head_collision = pygame.mixer.Sound('./snake_game/sounds/collision_head.flac')
+        self.gameover_music = pygame.mixer.Sound('./snake_game/sounds/gameover.wav')
+        self.bg_music = bg_music
 
         # intro settings
         self.intro_font = pygame.font.Font(None, 100)
@@ -248,10 +250,18 @@ class GameState():
         self.screen.blit(self.play_text, self.play_text_rect)
 
     def gameover_state(self):
+        self.bg_music.stop()
+        self.gameover_music.play()
+
         playagain_font = pygame.font.Font(None, 30)
         playagain_text = playagain_font.render('Play again', True, DARK_GRAY)
         playagain_rect = playagain_text.get_rect()
         playagain_rect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+
+        score_font = pygame.font.Font(None, 40)
+        score_text = score_font.render(f'Score = {self.head.get_score()}', True, DARK_GRAY)
+        score_rect= score_text.get_rect()
+        score_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 60)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -260,6 +270,8 @@ class GameState():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if playagain_rect.collidepoint(pygame.mouse.get_pos()):
+                        self.gameover_music.stop()
+                        self.bg_music.play(-1)
                         self.body_group.empty()
                         self.head_group.empty()
                         self.pickup_group.empty()
@@ -284,5 +296,6 @@ class GameState():
         self.screen.fill(WHITE)
         self.screen.blit(gameover_text, gameover_rect)
         self.screen.blit(playagain_text, playagain_rect)
+        self.screen.blit(score_text, score_rect)
 
 
