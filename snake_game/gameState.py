@@ -52,7 +52,7 @@ class GameState():
         elif self.state == 'pause':
             self.pause_state()
         elif self.state == 'gameover':
-            self.gameover_sate()
+            self.gameover_state()
 
     def play_init(self):
         # Add sprites to groups
@@ -194,7 +194,6 @@ class GameState():
 
         self.pickup_group.add(apple)
         self.timer_speed -= 1
-        print(f" New timer speed : {self.timer_speed}")
         pygame.time.set_timer(self.update_head, self.timer_speed)
     
     def pause_state(self):
@@ -248,7 +247,7 @@ class GameState():
         self.screen.blit(self.snake_text, self.snake_text_rect)
         self.screen.blit(self.play_text, self.play_text_rect)
 
-    def gameover_sate(self):
+    def gameover_state(self):
         playagain_font = pygame.font.Font(None, 30)
         playagain_text = playagain_font.render('Play again', True, DARK_GRAY)
         playagain_rect = playagain_text.get_rect()
