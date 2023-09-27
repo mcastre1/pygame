@@ -6,6 +6,7 @@ import random, pygame, sys
 
 class GameState():
     def __init__(self, head_group, body_group, pickup_group, screen, apple_bite_sfx):
+        pygame.mixer.init()
         self.state = "play"
         self.head_group = head_group
         self.body_group = body_group
@@ -19,6 +20,7 @@ class GameState():
 
         # sounds
         self.apple_bite_sfx = apple_bite_sfx
+        self.head_collision = pygame.mixer.Sound('./snake_game/sounds/collision_head.flac')
 
         # intro settings
         self.intro_font = pygame.font.Font(None, 100)
@@ -129,6 +131,9 @@ class GameState():
             if self.head.rect.bottom > SCREEN_HEIGHT:
                 self.state = 'gameover'
 
+        if self.state == 'gameover':
+            self.head_collision.play()
+
     # Update score at top of screen to new score.
     def updateScore(self):
         text = self.font.render(f'Score : {self.head.score}', True, 'Black')
@@ -148,8 +153,8 @@ class GameState():
                 self.state = 'gameover'
         
         # Check collision of head with apple/pickup
-        # If so, play sound, destroy the pickup, randomly spawn a new pickup on screen
-        # and create a new body part for the snake.
+        # If so, play sound, destroy the pickup, randomly spawn a new pickup on screen,
+        # create a new body part for the snake, and add to the current score.
         for pickup in self.pickup_group:
             if self.head.rect.colliderect(pickup.rect):
                 self.apple_bite_sfx.play()
