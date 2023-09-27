@@ -150,6 +150,7 @@ class GameState():
         # If so, gameover
         for body in self.body_group:
             if body.rect.colliderect(self.head.rect):
+                self.head_collision.play()
                 self.state = 'gameover'
         
         # Check collision of head with apple/pickup
