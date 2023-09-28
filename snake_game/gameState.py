@@ -3,6 +3,7 @@ from sprites.head import Head
 from sprites.apple import Apple
 from sprites.body import Body
 import random, pygame, sys
+from particle import Particle
 
 class GameState():
     def __init__(self, head_group, body_group, pickup_group, screen, apple_bite_sfx, bg_music):
@@ -40,6 +41,9 @@ class GameState():
         self.pause_text = self.pause_font.render('PAUSE', True, 'Black')
         self.pause_text_rect = self.pause_text.get_rect()
         self.pause_text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
+
+        # particles
+        self.particles = Particle()
 
     def set_state(self, state):
         self.state = state
@@ -114,6 +118,7 @@ class GameState():
         self.body_group.draw(self.screen)
 
         self.checkCollision()
+        self.particles.emit()
         self.checkOutOfBounds()
         self.updateScore()
 
@@ -161,6 +166,8 @@ class GameState():
         for pickup in self.pickup_group:
             if self.head.rect.colliderect(pickup.rect):
                 self.apple_bite_sfx.play()
+                position = pickup.rect.topleft
+                self.particles.add_particles(position[0], position[1])
                 pickup.kill()
                 self.spawnApple()
                 
@@ -272,6 +279,7 @@ class GameState():
                     if playagain_rect.collidepoint(pygame.mouse.get_pos()):
                         self.gameover_music.stop()
                         self.bg_music.play(-1)
+                        self.particles.particles = []
                         self.body_group.empty()
                         self.head_group.empty()
                         self.pickup_group.empty()
