@@ -4,6 +4,7 @@ from sprites.apple import Apple
 from sprites.body import Body
 import random, pygame, sys
 from particle import Particle
+import json
 
 class GameState():
     def __init__(self, head_group, body_group, pickup_group, screen, apple_bite_sfx, bg_music):
@@ -45,6 +46,16 @@ class GameState():
         # particles
         self.particles = Particle()
 
+        # saving feature
+        self.highscores = {}
+
+        try:
+        # Read and load json text file
+            with open('./snake_game/highscores.txt', 'r') as highscores_file:
+                self.highscores = json.load(highscores_file)
+        except:
+            print("No file created yet")
+
     def set_state(self, state):
         self.state = state
 
@@ -59,6 +70,8 @@ class GameState():
             self.pause_state()
         elif self.state == 'gameover':
             self.gameover_state()
+        elif self.state == 'highscores':
+            self.highscores_state()
 
     def play_init(self):
         # Add sprites to groups
@@ -74,6 +87,7 @@ class GameState():
     def play(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.save()
                 pygame.quit()
                 sys.exit()
 
@@ -121,6 +135,11 @@ class GameState():
         self.particles.emit()
         self.checkOutOfBounds()
         self.updateScore()
+
+    # public method to save current highscores
+    def save(self):
+        with open('./snake_game/highscores.txt', 'w') as highscores_file:
+                json.dump(self.highscores, highscores_file)
 
     # Check if snake head "touches" the edge of the screen
     # If so, gameover.
@@ -208,6 +227,7 @@ class GameState():
     def pause_state(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.save()
                 pygame.quit()
                 sys.exit()
             
@@ -237,6 +257,7 @@ class GameState():
     def intro_state(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.save()
                 pygame.quit()
                 sys.exit()
 
@@ -250,11 +271,30 @@ class GameState():
                     self.play_text = self.button_font.render('Play', True, 'Gray')
                 else:
                     self.play_text = self.button_font.render('Play', True, 'Black')
-        
+
+                
 
         self.screen.fill(WHITE)
+        
+        highscores_font = pygame.font.Font(None, 30)
+        highscores_text = highscores_font.render('Highscores', True, RED)
+        highscores_rect = highscores_text.get_rect()
+        highscores_rect.center = (SCREEN_WIDTH/2, (SCREEN_WIDTH/2)+50)
+        self.screen.blit(highscores_text, highscores_rect)
+
         self.screen.blit(self.snake_text, self.snake_text_rect)
         self.screen.blit(self.play_text, self.play_text_rect)
+
+    def highscores_state(self):
+        # highscores
+        highscores = []
+        count = 1
+        for key in self.highscores.keys:
+            highscore_font = pygame.font.Font(None, 30)
+            highscore_text = highscore_font.render(f'{key} ------ {self.highscores[key]}')
+            highscore_rect = highscore_text.get_rect()
+            highscore_rect.center = (SCREEN_WIDTH/2, (SCREEN_HEIGHT/11) * count)
+            self.screen.blit(highscore_text, highscore_rect)
 
     def gameover_state(self):
         self.bg_music.stop()
@@ -272,6 +312,7 @@ class GameState():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.save()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
