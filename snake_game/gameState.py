@@ -37,6 +37,11 @@ class GameState():
         self.play_text_rect = self.play_text.get_rect()
         self.play_text_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 100)
 
+        self.highscores_font = pygame.font.Font(None, 30)
+        self.highscores_text = self.highscores_font.render('Highscores', True, RED)
+        self.highscores_rect = self.highscores_text.get_rect()
+        self.highscores_rect.center = (SCREEN_WIDTH/2, (SCREEN_WIDTH/2)+50)
+
         # pause settings
         self.pause_font = pygame.font.Font(None, 100)
         self.pause_text = self.pause_font.render('PAUSE', True, 'Black')
@@ -265,36 +270,47 @@ class GameState():
                 if event.button == 1:
                     if self.play_text_rect.collidepoint(pygame.mouse.get_pos()):
                         self.state = 'play'
+                    if self.highscores_rect.collidepoint(pygame.mouse.get_pos()):
+                        self.state = 'highscores'
 
             if event.type == pygame.MOUSEMOTION:
+
                 if self.play_text_rect.collidepoint(pygame.mouse.get_pos()):
                     self.play_text = self.button_font.render('Play', True, 'Gray')
                 else:
                     self.play_text = self.button_font.render('Play', True, 'Black')
+                
+                if self.highscores_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.highscores_text = self.highscores_font.render('Highscores', True, 'Orange')
+                else:
+                    self.highscores_text = self.highscores_font.render('Highscores', True, RED)
 
                 
 
         self.screen.fill(WHITE)
-        
-        highscores_font = pygame.font.Font(None, 30)
-        highscores_text = highscores_font.render('Highscores', True, RED)
-        highscores_rect = highscores_text.get_rect()
-        highscores_rect.center = (SCREEN_WIDTH/2, (SCREEN_WIDTH/2)+50)
-        self.screen.blit(highscores_text, highscores_rect)
+        self.screen.blit(self.highscores_text, self.highscores_rect)
 
         self.screen.blit(self.snake_text, self.snake_text_rect)
         self.screen.blit(self.play_text, self.play_text_rect)
 
     def highscores_state(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
         # highscores
-        highscores = []
         count = 1
-        for key in self.highscores.keys:
+
+        self.screen.fill(WHITE)
+
+        for key in self.highscores.keys():
             highscore_font = pygame.font.Font(None, 30)
-            highscore_text = highscore_font.render(f'{key} ------ {self.highscores[key]}')
+            highscore_text = highscore_font.render(f'{key} ------ {self.highscores[key]}', True, 'black')
             highscore_rect = highscore_text.get_rect()
-            highscore_rect.center = (SCREEN_WIDTH/2, (SCREEN_HEIGHT/11) * count)
+            highscore_rect.center = (SCREEN_WIDTH/2, (SCREEN_HEIGHT/12) * count)
+            count += 1
             self.screen.blit(highscore_text, highscore_rect)
+            print(key)
 
     def gameover_state(self):
         self.bg_music.stop()
