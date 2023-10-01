@@ -54,6 +54,9 @@ class GameState():
         # saving feature
         self.highscores = {}
 
+        # input state
+        self.user_text = ''
+
         try:
         # Read and load json text file
             with open('./snake_game/highscores.txt', 'r') as highscores_file:
@@ -77,6 +80,8 @@ class GameState():
             self.gameover_state()
         elif self.state == 'highscores':
             self.highscores_state()
+        elif self.state == 'input':
+            self.user_input_state()
 
     def play_init(self):
         # Add sprites to groups
@@ -363,4 +368,33 @@ class GameState():
         self.screen.blit(playagain_text, playagain_rect)
         self.screen.blit(score_text, score_rect)
 
+    def user_input_state(self):
+        base_font = pygame.font.Font(None, 32)
+        
+
+        input_rect = pygame.Rect(200,200,140,32)
+        text_surface = base_font.render(self.user_text, True, 'black')
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    self.user_text = self.user_text[:-1]
+                else:
+                    self.user_text += event.unicode
+
+                text_surface = base_font.render(self.user_text, True, 'black')
+
+        self.screen.fill(WHITE)
+        pygame.draw.rect(self.screen, 'yellow', input_rect)
+
+        input_rect.w = max(100, text_surface.get_width()+10)
+
+        self.screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+
+
+        
 

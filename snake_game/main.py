@@ -11,7 +11,6 @@ pygame.display.set_caption('Snake Game')
 
 #sounds
 apple_bite_sfx = pygame.mixer.Sound('./snake_game/sounds/apple_bite.ogg')
-
 #music
 background_music = pygame.mixer.Sound('./snake_game/sounds/background_music.mp3')
 background_music.play(-1)
@@ -22,7 +21,7 @@ body_group = pygame.sprite.Group()
 pickup_group = pygame.sprite.Group()
 
 game_state = GameState(head_group, body_group, pickup_group, screen, apple_bite_sfx, background_music)
-game_state.set_state('intro')
+game_state.set_state('input')
 
 while True:
     game_state.state_manager()
