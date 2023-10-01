@@ -369,11 +369,22 @@ class GameState():
         self.screen.blit(score_text, score_rect)
 
     def user_input_state(self):
-        base_font = pygame.font.Font(None, 32)
-        
+        font = pygame.font.Font(None, 60)
+        text = font.render(f'New Highscore: {self.head.get_score()}', True, 'black')
+        text_rect = text.get_rect()
+        text_rect.center = (SCREEN_WIDTH/2, 80)
 
-        input_rect = pygame.Rect(200,200,140,32)
+        input_label_font = pygame.font.Font(None, 32)
+        input_label = input_label_font.render('Enter your name: ', True, 'black')
+        input_label_rect = input_label.get_rect()
+
+        base_font = pygame.font.Font(None, 32)
+        input_rect = pygame.Rect(0,0,140,32)
+        input_rect.x = SCREEN_WIDTH/2
+        input_rect.y = SCREEN_WIDTH/2
         text_surface = base_font.render(self.user_text, True, 'black')
+
+        input_label_rect.topright = input_rect.topleft
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -393,7 +404,9 @@ class GameState():
 
         input_rect.w = max(100, text_surface.get_width()+10)
 
-        self.screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+        self.screen.blit(text_surface, (input_rect.x+5, input_rect.y+5)) # input rect
+        self.screen.blit(input_label, input_label_rect) # Text for label to the left of input rect
+        self.screen.blit(text, text_rect) # Text for top of screen highscore
 
 
         
