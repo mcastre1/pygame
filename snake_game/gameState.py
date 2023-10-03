@@ -384,6 +384,11 @@ class GameState():
         input_rect.y = SCREEN_WIDTH/2
         text_surface = base_font.render(self.user_text, True, 'black')
 
+        button_font = pygame.font.Font(None, 20)
+        button = button_font.render('Enter', True, 'black')
+        button_rect = button.get_rect()
+        button_rect.center = (SCREEN_WIDTH/2, input_rect.bottom + 200)
+
         input_label_rect.topright = input_rect.topleft
 
         for event in pygame.event.get():
@@ -399,6 +404,11 @@ class GameState():
 
                 text_surface = base_font.render(self.user_text, True, 'black')
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if button_rect.collidepoint(pygame.mouse.get_pos()):
+                        print('Entered name')
+
         self.screen.fill(WHITE)
         pygame.draw.rect(self.screen, 'yellow', input_rect)
 
@@ -407,6 +417,7 @@ class GameState():
         self.screen.blit(text_surface, (input_rect.x+5, input_rect.y+5)) # input rect
         self.screen.blit(input_label, input_label_rect) # Text for label to the left of input rect
         self.screen.blit(text, text_rect) # Text for top of screen highscore
+        self.screen.blit(button, button_rect)
 
 
         

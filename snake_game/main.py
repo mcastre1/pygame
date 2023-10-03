@@ -21,7 +21,7 @@ body_group = pygame.sprite.Group()
 pickup_group = pygame.sprite.Group()
 
 game_state = GameState(head_group, body_group, pickup_group, screen, apple_bite_sfx, background_music)
-game_state.set_state('input')
+game_state.set_state('intro')
 
 while True:
     game_state.state_manager()
