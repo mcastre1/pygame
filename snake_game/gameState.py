@@ -53,6 +53,9 @@ class GameState():
 
         # saving feature
         self.highscores = {}
+        self.highscores_keys = []
+        self.highscores_values = []
+
 
         # input state
         self.user_text = ''
@@ -61,6 +64,11 @@ class GameState():
         # Read and load json text file
             with open('./snake_game/highscores.txt', 'r') as highscores_file:
                 self.highscores = json.load(highscores_file)
+                self.highscores_keys = list(self.highscores.keys())
+                self.highscores_values = list(self.highscores.values())
+
+                print(self.highscores_keys)
+                print(self.highscores_values)
         except:
             print("No file created yet")
 
@@ -316,8 +324,30 @@ class GameState():
             count += 1
             self.screen.blit(highscore_text, highscore_rect)
             print(key)
+    def update_highscores(self):
+        found_index = False
+        index = 0
+        for i in range(len(self.highscores_values)):
+            if self.head.get_score() > self.highscores_values[i]:
+                found_index = True
+                index = i
+                break
+
+        if found_index:
+            if index == 0:
+                new_hs = [self.highscores_values[index]] + self.highscores_values[1:]
+                self.highscores_values = new_hs
+                print(new_hs)
+                
+
+                # Need to place this on dict write to file.
+                for index, key in enumerate(self.highscores_keys):
+                    self.highscores[f'{key}'] = self.highscores_values[index]
+
+        print(self.highscores)
 
     def gameover_state(self):
+        self.update_highscores()
         self.bg_music.stop()
         self.gameover_music.play()
 
