@@ -5,6 +5,7 @@ from sprites.body import Body
 import random, pygame, sys
 from particle import Particle
 import json
+from gui.button import Button
 
 class GameState():
     def __init__(self, head_group, body_group, pickup_group, screen, apple_bite_sfx, bg_music):
@@ -59,6 +60,8 @@ class GameState():
 
         # input state
         self.user_text = ''
+        self.test_button = Button('test', 22, 'black')
+        self.test_button.get_button_rect().center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 200)
 
         try:
         # Read and load json text file
@@ -448,6 +451,7 @@ class GameState():
         self.screen.blit(input_label, input_label_rect) # Text for label to the left of input rect
         self.screen.blit(text, text_rect) # Text for top of screen highscore
         self.screen.blit(button, button_rect)
+        self.test_button.blit_button()
 
 
         
