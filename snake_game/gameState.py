@@ -63,6 +63,8 @@ class GameState():
         self.test_button = Button('test', 22, 'black')
         self.test_button.get_button_rect().center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 200)
 
+        self.single_update = False
+
         try:
         # Read and load json text file
             with open('./snake_game/highscores.txt', 'r') as highscores_file:
@@ -340,17 +342,21 @@ class GameState():
             if index == 0:
                 new_hs = [self.head.get_score()] + self.highscores_values[0:-1]
                 self.highscores_values = new_hs
-                print(new_hs)
-                
+            elif index == len(self.highscores_values) - 1:
+                new_hs = self.highscores_values[0:-1]+[self.head.get_score()]
+                self.highscores_values = new_hs
+            else:
+                new_hs = self.highscores_values[0:index] + [self.head.get_score()] + self.highscores_values[index+1:]
+                self.highscores_values = new_hs
 
-                # Need to place this on dict write to file.
-                for index, key in enumerate(self.highscores_keys):
-                    self.highscores[f'{key}'] = self.highscores_values[index]
-
-        print(self.highscores)
+            # Need to place this on dict write to file.
+            for index, key in enumerate(self.highscores_keys):
+                self.highscores[f'{key}'] = self.highscores_values[index]
 
     def gameover_state(self):
-        self.update_highscores()
+        if not self.single_update:
+            self.update_highscores()
+            self.single_update = True
         self.bg_music.stop()
         self.gameover_music.play()
 
