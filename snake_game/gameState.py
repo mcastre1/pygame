@@ -330,7 +330,7 @@ class GameState():
     def update_highscores(self):
         found_index = False
         index = 0
-        for i in range(len(self.highscores_values)):
+        for i in range(0,len(self.highscores_values)):
             if self.head.get_score() > self.highscores_values[i]:
                 found_index = True
                 index = i
@@ -338,7 +338,7 @@ class GameState():
 
         if found_index:
             if index == 0:
-                new_hs = [self.highscores_values[index]] + self.highscores_values[1:]
+                new_hs = [self.head.get_score()] + self.highscores_values[0:-1]
                 self.highscores_values = new_hs
                 print(new_hs)
                 
@@ -451,7 +451,7 @@ class GameState():
         self.screen.blit(input_label, input_label_rect) # Text for label to the left of input rect
         self.screen.blit(text, text_rect) # Text for top of screen highscore
         self.screen.blit(button, button_rect)
-        self.test_button.blit_button()
+        self.test_button.blit()
 
 
         
