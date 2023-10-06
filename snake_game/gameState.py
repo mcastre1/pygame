@@ -64,6 +64,7 @@ class GameState():
         self.test_button.get_button_rect().center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 200)
 
         self.single_update = False
+        self.new_highscore = False
 
         try:
         # Read and load json text file
@@ -332,7 +333,7 @@ class GameState():
             highscore_rect.center = (SCREEN_WIDTH/2, (SCREEN_HEIGHT/12) * count)
             count += 1
             self.screen.blit(highscore_text, highscore_rect)
-            print(key)
+
     def update_highscores(self):
         found_index = False
         index = 0
@@ -353,9 +354,19 @@ class GameState():
                 new_hs = self.highscores_values[0:index] + [self.head.get_score()] + self.highscores_values[index:-1]
                 self.highscores_values = new_hs
 
-            
+    def check_highscores(self):
+        for score in self.highscores_values:
+            if self.head.get_score() > score:
+                self.new_highscore = True
 
     def gameover_state(self):
+        # Check whether there is a new highscore or not.
+        self.check_highscores()
+
+        if self.new_highscore:
+            self.state = 'input'
+            self.user_input_state()
+
         if not self.single_update:
             self.update_highscores()
             self.single_update = True
