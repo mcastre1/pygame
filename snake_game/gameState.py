@@ -161,6 +161,10 @@ class GameState():
 
     # public method to save current highscores
     def save(self):
+        # stitching highscores values and keys to the correct format
+        for index, key in enumerate(self.highscores_keys):
+            self.highscores[f'{key}'] = self.highscores_values[index]
+
         with open('./snake_game/highscores.txt', 'w') as highscores_file:
                 json.dump(self.highscores, highscores_file)
 
@@ -346,17 +350,16 @@ class GameState():
                 new_hs = self.highscores_values[0:-1]+[self.head.get_score()]
                 self.highscores_values = new_hs
             else:
-                new_hs = self.highscores_values[0:index] + [self.head.get_score()] + self.highscores_values[index+1:]
+                new_hs = self.highscores_values[0:index] + [self.head.get_score()] + self.highscores_values[index:-1]
                 self.highscores_values = new_hs
 
-            # Need to place this on dict write to file.
-            for index, key in enumerate(self.highscores_keys):
-                self.highscores[f'{key}'] = self.highscores_values[index]
+            
 
     def gameover_state(self):
         if not self.single_update:
             self.update_highscores()
             self.single_update = True
+
         self.bg_music.stop()
         self.gameover_music.play()
 
