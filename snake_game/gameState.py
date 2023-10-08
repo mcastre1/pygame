@@ -165,6 +165,8 @@ class GameState():
         # stitching highscores values and keys to the correct format
         for index, key in enumerate(self.highscores_keys):
             self.highscores[f'{key}'] = self.highscores_values[index]
+            print(key)
+            print(index)
 
         with open('./snake_game/highscores.txt', 'w') as highscores_file:
                 json.dump(self.highscores, highscores_file)
@@ -353,6 +355,8 @@ class GameState():
             else:
                 new_hs = self.highscores_values[0:index] + [self.head.get_score()] + self.highscores_values[index:-1]
                 self.highscores_values = new_hs
+            
+            self.highscores_keys[index] = self.user_text
 
     def check_highscores(self):
         for score in self.highscores_values:
@@ -363,7 +367,7 @@ class GameState():
         # Check whether there is a new highscore or not.
         self.check_highscores()
 
-        if self.new_highscore:
+        if self.new_highscore and self.user_text == '':
             self.state = 'input'
             self.user_input_state()
 
@@ -460,7 +464,8 @@ class GameState():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if button_rect.collidepoint(pygame.mouse.get_pos()):
-                        print('Entered name')
+                        self.state = 'gameover'
+                        print(self.user_text)
 
         self.screen.fill(WHITE)
         pygame.draw.rect(self.screen, 'yellow', input_rect)
