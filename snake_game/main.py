@@ -27,4 +27,3 @@ while True:
     game_state.state_manager()
     pygame.display.update()
     clock.tick(30)
-    

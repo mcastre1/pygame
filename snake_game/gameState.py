@@ -72,9 +72,6 @@ class GameState():
                 self.highscores = json.load(highscores_file)
                 self.highscores_keys = list(self.highscores.keys())
                 self.highscores_values = list(self.highscores.values())
-
-                print(self.highscores_keys)
-                print(self.highscores_values)
         except:
             print("No file created yet")
 
@@ -163,10 +160,20 @@ class GameState():
     # public method to save current highscores
     def save(self):
         # stitching highscores values and keys to the correct format
+        print(self.highscores_keys)
+        print(self.highscores_values)
+        # for index, key in enumerate(self.highscores_keys):
+        #     print(f'key:{key}')
+        #     print(f'index:{index}')
+
+        #     self.highscores[key] = self.highscores_values[index]
+
+        # self.highscores.keys = 
+        new_highscore_dict = {}
         for index, key in enumerate(self.highscores_keys):
-            self.highscores[f'{key}'] = self.highscores_values[index]
-            print(key)
-            print(index)
+            new_highscore_dict[key] = self.highscores_values[index]
+
+        self.highscores = new_highscore_dict
 
         with open('./snake_game/highscores.txt', 'w') as highscores_file:
                 json.dump(self.highscores, highscores_file)
@@ -369,7 +376,7 @@ class GameState():
 
         if self.new_highscore and self.user_text == '':
             self.state = 'input'
-            self.user_input_state()
+            return
 
         if not self.single_update:
             self.update_highscores()
@@ -465,7 +472,7 @@ class GameState():
                 if event.button == 1:
                     if button_rect.collidepoint(pygame.mouse.get_pos()):
                         self.state = 'gameover'
-                        print(self.user_text)
+
 
         self.screen.fill(WHITE)
         pygame.draw.rect(self.screen, 'yellow', input_rect)
